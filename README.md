@@ -58,43 +58,93 @@
 
 ---
 
-### 1. Investigación teórica
+# 1. Investigación teórica
 
-* **Objetivo**: Explorar fundamentos y arquitecturas de redes neuronales.
-  Historia y evolución de las redes neuronales. Una red neuronal artificial (RNA) es, según Haykin (1994), “un procesador paralelo masivamente distribuido que tiene una facilidad natural para el almacenamiento de conocimiento obtenido de la experiencia para luego hacer éste disponible para su uso”
-  biblus.us.es
-  . La historia de estos modelos se remonta a la década de 1940: la primera ola de investigación (cibernética, 1940s-1960s) introdujo teorías de aprendizaje neuronal (McCulloch & Pitts, 1943; Hebb, 1949) junto con los primeros modelos como la neurona de McCulloch-Pitts y el perceptrón de Rosenblatt (1958)
-  deeplearningbook.org
-  . Tras un periodo de desilusión en los 1970s (p.ej., las limitaciones señaladas por Minsky y Papert en 1969), surgió una segunda ola en los 1980s bajo el paradigma conexionista, impulsada por el algoritmo de retropropagación del error (Rumelhart et al., 1986) que permitió entrenar redes con una o dos capas ocultas de neuronas
-  deeplearningbook.org
-  . Finalmente, a partir de 2006 inicia la tercera ola o era del aprendizaje profundo (deep learning), caracterizada por redes neuronales con muchas capas (redes profundas) capaces de aprender representaciones jerárquicas a gran escala
-  deeplearningbook.org
-  .
-  Principales arquitecturas: Perceptrón Multicapa (MLP), Redes Convolucionales (CNN), Redes Recurrentes (RNN). Las arquitecturas fundamentales de RNA incluyen:
-  Perceptrón Multicapa (MLP): Es una red neuronal feed-forward (de propagación hacia adelante) con múltiples capas de neuronas totalmente conectadas (una capa de entrada, capas ocultas y una capa de salida). Una MLP se puede ver como una función matemática que transforma un conjunto de entradas en un conjunto de salidas mediante la composición de muchas funciones más simples
-  mnassar.github.io
-  . De hecho, el término “multilayer perceptron” es algo impreciso, pues el modelo realmente consta de múltiples capas de modelos de regresión logística con activaciones continuas, más que de múltiples perceptrones binarios con funciones de activación discontinuas
-  wiki.eecs.yorku.ca
-  . Las MLP son útiles para aproximar funciones complejas en tareas de clasificación y regresión, aprendiendo pesos sinápticos que capturan las relaciones entre las variables de entrada y salida.
-  Red Neuronal Convolucional (CNN): Arquitectura diseñada para procesar datos con estructura de rejilla (por ejemplo, imágenes pixeles en 2D o series temporales 1D), aplicando operaciones de convolución para extraer características locales y espaciales
-  slideplayer.com
-  . En una CNN, al menos una capa usa convolución en lugar de la multiplicación matricial densa típica de las capas plenamente conectadas, lo que reduce drásticamente el número de parámetros al emplear conexiones locales y pesos compartidos
-  slideplayer.com
-  . Las CNN han logrado gran éxito en visión por computador al explotar propiedades como la invariancia a traslaciones y la detección de patrones locales repetitivos en las imágenes
-  slideplayer.com
-  .
-  Red Neuronal Recurrente (RNN): Tipo de red neuronal que incorpora conexiones recurrentes (retroalimentación), lo cual la hace adecuada para datos secuenciales como texto, voz o series temporales. Las RNN mantienen un estado interno de memoria que se actualiza a medida que procesan una secuencia, permitiendo modelar dependencias a lo largo del tiempo
-  arxiv.org
-  . Este estado oculto actúa como un resumen de lo “recordado” hasta el momento en la secuencia, influyendo en la salida mientras avanzan los pasos temporales. Las variantes modernas de RNN, como LSTM y GRU, introducen mecanismos de puerta en las neuronas recurrentes para facilitar el aprendizaje de dependencias de largo plazo mitigando problemas como el desvanecimiento del gradiente.
-  Algoritmos de entrenamiento: retropropagación y optimizadores. El algoritmo clave para entrenar redes neuronales es la retropropagación del error (backpropagation), que permite calcular de forma eficiente el gradiente de la función de pérdida con respecto a todos los pesos de la red, propagando el error desde la capa de salida hacia las capas anteriores
-  deeplearningbook.org
-  . Dicho gradiente se utiliza luego en un esquema de optimización por descenso de gradiente para ajustar los pesos. En la práctica, se emplea típicamente descenso por gradiente estocástico (stochastic gradient descent, SGD) sobre minibatches de datos, junto con mejoras como el método de momento (momentum) para acelerar la convergencia. Más recientemente, se han desarrollado optimizadores adaptativos (p. ej., AdaGrad, RMSProp, Adam) que ajustan automáticamente la tasa de aprendizaje durante el entrenamiento, logrando convergencias más rápidas y estables
-  mnassar.github.io
-  . Estas técnicas de optimización permiten entrenar redes neuronales profundas de manera efectiva incluso con grandes conjuntos de datos.
+*Fundamentos y arquitectura de las redes neuronales con foco en un clasificador de spam en C++*
+
 ---
 
-### 2. Diseño e implementación
+## 1.1 Historia y evolución de las redes neuronales
 
+Las **redes neuronales artificiales (RNA)** nacen en la década de 1940 dentro de la cibernética.
+
+* **McCulloch & Pitts (1943)** modelaron la primera neurona lógica –un sumador binario con umbral– y **Hebb (1949)** formuló la primera regla de aprendizaje sináptico (“las neuronas que se disparan juntas, se conectan”).
+* **Rosenblatt (1958)** presentó el **perceptrón**, un clasificador lineal entrenable en hardware.
+* El optimismo cesó cuando **Minsky y Papert (1969)** demostraron que un perceptrón de capa única no resuelve XOR ⇒ *primer invierno de la IA*.
+* A mediados de los 80, **Rumelhart, Hinton y Williams (1986)** publican el algoritmo de **retropropagación del error** (backpropagation), reactivando el campo bajo el paraguas *conexionista* y permitiendo entrenar el **perceptrón multicapa (MLP)**.
+* En los 90 se afianzan arquitecturas especializadas: **LeNet-5** (LeCun et al., 1998) para imágenes y **LSTM** (Hochreiter & Schmidhuber, 1997) para secuencias.
+* Desde 2006, con el pre-entrenamiento de Hinton et al. y la llegada de la GPU, se inaugura la era del **aprendizaje profundo**. Hoy, modelos como **transformers** dominan la PNL, aunque para un proyecto de spam en C++ un MLP o una CNN 1-D ya son prácticos.
+
+---
+
+## 1.2 Arquitecturas clave y su relación con la detección de spam
+
+| Arquitectura                     | Idea esencial                                                                                   | Por qué sirve en un clasificador de spam                                                                                                          |
+| -------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **MLP** (feed-forward denso)     | Multiplica vectores de características por matrices de pesos y aplica activaciones no lineales. | Nuestro **Bag-of-Words vectorizado** produce vectores densos (o dispersos) de tamaño \|vocab\|; un MLP aprende directamente la frontera ham/spam. |
+| **CNN 1-D**                      | Convolución en la dimensión de la secuencia; detecta *n-gramas* locales con pesos compartidos.  | Frases como “free \$\$\$” o “click aquí” se detectan como patrones locales independientemente de su posición.                                     |
+| **RNN / LSTM / GRU**             | Mantienen un estado oculto que se actualiza token a token.                                      | Útil si queremos modelar la **dependencia de orden** entre palabras en vez de tratarlas como bolsa.                                               |
+| *(Mención)* **Transformer/BERT** | Auto-atención bidireccional; se pre-entrena con corpus masivo.                                  | En producción podríamos exportar a ONNX y usar `onnx-runtime`, pero supera el alcance de un laboratorio C++ puro.                                 |
+
+---
+
+## 1.3 Algoritmos de entrenamiento
+
+1. **Retropropagación**: aplica la regla de la cadena para computar $\partial\mathcal L/\partial\theta$ capa por capa desde la salida hasta la entrada.
+2. **Descenso de gradiente estocástico (SGD)** con *mini-batch* ajusta los pesos $\theta \leftarrow \theta - \eta\nabla\mathcal L$.
+3. **Optimizadores adaptativos**:
+
+  * **AdaGrad** (2011) adapta la tasa de aprendizaje por parámetro; útil si el vector de entrada es muy disperso como en BoW.
+  * **RMSProp** (2012) suaviza AdaGrad con una media exponencial de gradientes al cuadrado.
+  * **Adam** (2015) combina momento y RMSProp; converge rápido y es el estándar en proyectos de spam académicos.
+
+---
+
+## 1.4 Vectorización: puente entre teoría y código C++
+
+> **Objetivo práctico**: convertir cada correo en un vector numérico y cada *forward/backward pass* en una operación de álgebra lineal soportada por BLAS/cuBLAS.
+
+### 1.4.1 Vectorización del texto
+
+* **Bag-of-Words (BoW)**: vector $v\in\mathbb R^{|V|}$ donde $v_i$ es la frecuencia de la palabra $i$.
+* **TF-IDF**: $v_i = \text{tf}_i\cdot\log\frac{N}{\text{df}_i}$ realza términos raros e informativos.
+* **Embeddings** (word2vec/FastText): mapa $E\in\mathbb R^{|V|\times d}$; el correo se representa como promedio o concatenación de embeddings → entrada densa de bajo rango.
+
+### 1.4.2 Vectorización numérica
+
+* En un **MLP**: `Matrix X (B×|V|)` × `Matrix Wᵀ (hidden×|V|)` → `Z`.
+* Con **Eigen** o **OpenBLAS** (`cblas_sgemm`) esta multiplicación usa SIMD y multihilo; en GPU, cuBLAS/cuDNN.
+* Las CNN 1-D convierten la convolución en *im2col* + GEMM, reutilizando la misma infraestructura.
+
+---
+
+## 1.5 Pasos para el proyecto de spam
+
+1. **Carga y preprocesamiento** (`TextLoader`)
+
+  * Tokenización + stop-words + minúsculas.
+  * Construcción de vocabulario con **min\_freq≥5**.
+2. **Vectorización**
+
+  * Empezar con BoW; añadir TF-IDF como mejora.
+3. **Modelo base**
+
+  * `Dense(|V|→128) → ReLU → Dropout(0.3) → Dense(128→1) → Sigmoid`.
+4. **Entrenamiento**
+
+  * `Batch=64`, `Adam, η=1e-3`, 10-20 épocas, pérdida BCE.
+5. **Métricas**
+
+  * Accuracy, *precision*, *recall* y **F1** (más relevante en clases desequilibradas).
+6. **Persistencia**
+
+  * Serializar pesos (`.bin`) + vocabulario (`.json`) para inferencia.
+7. **Escalabilidad**
+
+  * Para >100 k correos, compilar con OpenBLAS multihilo o exportar a ONNX y usar GPU.
+
+---
+### 2. Diseño e implementación
 #### 2.1 Arquitectura de la solución
 
 * **Patrones de diseño**: ejemplo: Factory para capas, Strategy para optimizadores.
@@ -175,39 +225,22 @@
 
 ---
 
-### 7. Bibliografía
+## Referencias en español (APA 7)
 
-Referencias (formato APA 7.ª ed.)
-Haykin, S. (1994). Neural networks: A comprehensive foundation (1.ª ed.). Prentice Hall.
+* Haykin, S. (1994). *Redes neuronales: Un enfoque integral*. Prentice Hall.
+* Hebb, D. O. (1949). *La organización del comportamiento*. Wiley.
+* Hochreiter, S., & Schmidhuber, J. (1997). Long short-term memory. *Neural Computation, 9*(8), 1735-1780. [https://doi.org/10.1162/neco.1997.9.8.1735](https://doi.org/10.1162/neco.1997.9.8.1735)
+* Kingma, D. P., & Ba, J. L. (2015). Adam: A method for stochastic optimization. *International Conference on Learning Representations*. [https://arxiv.org/abs/1412.6980](https://arxiv.org/abs/1412.6980)
+* LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P. (1998). Gradient-based learning applied to document recognition. *Proceedings of the IEEE, 86*(11), 2278-2324. [https://doi.org/10.1109/5.726791](https://doi.org/10.1109/5.726791)
+* McCulloch, W. S., & Pitts, W. (1943). A logical calculus of the ideas immanent in nervous activity. *The Bulletin of Mathematical Biophysics, 5*(4), 115-133. [https://doi.org/10.1007/BF02478259](https://doi.org/10.1007/BF02478259)
+* Minsky, M., & Papert, S. (1969). *Perceptrones: Una introducción a la geometría computacional*. MIT Press.
+* Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). Learning representations by back-propagating errors. *Nature, 323*(6088), 533-536. [https://doi.org/10.1038/323533a0](https://doi.org/10.1038/323533a0)
+* Rosenblatt, F. (1958). The perceptron: A probabilistic model for information storage and organization in the brain. *Psychological Review, 65*(6), 386-408. [https://doi.org/10.1037/h0042519](https://doi.org/10.1037/h0042519)
+* Tieleman, T., & Hinton, G. (2012). Lecture 6.5—RMSProp: Divide the gradient by a running average of its recent magnitude. *COURSERA: Neural Networks for Machine Learning*. University of Toronto.
+* Jurafsky, D., & Martin, J. H. (2023). *Procesamiento del lenguaje natural y comprensión de voz* (borrador 3.ª ed.). Stanford.
+* Mikolov, T., Chen, K., Corrado, G., & Dean, J. (2013). Efficient estimation of word representations in vector space. *arXiv*. [https://arxiv.org/abs/1301.3781](https://arxiv.org/abs/1301.3781)
 
-McCulloch, W. S., & Pitts, W. (1943). A logical calculus of the ideas immanent in nervous activity. The Bulletin of Mathematical Biophysics, 5(4), 115-133. https://doi.org/10.1007/BF02478259
 
-Hebb, D. O. (1949). The organization of behavior: A neuropsychological theory. Wiley.
-
-Rosenblatt, F. (1958). The perceptron: A probabilistic model for information storage and organization in the brain. Psychological Review, 65(6), 386-408. https://doi.org/10.1037/h0042519
-
-Minsky, M., & Papert, S. (1969). Perceptrons: An introduction to computational geometry. MIT Press.
-
-Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). Learning representations by back-propagating errors. Nature, 323, 533-536. https://doi.org/10.1038/323533a0
-
-Hinton, G. E., Osindero, S., & Teh, Y.-W. (2006). A fast learning algorithm for deep belief nets. Neural Computation, 18(7), 1527-1554. https://doi.org/10.1162/neco.2006.18.7.1527
-
-Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep learning. MIT Press.
-
-Nielsen, M. A. (2015). Neural networks and deep learning. Determination Press. https://neuralnetworksanddeeplearning.com
-
-LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P. (1998). Gradient-based learning applied to document recognition. Proceedings of the IEEE, 86(11), 2278-2324. https://doi.org/10.1109/5.726791
-
-Hochreiter, S., & Schmidhuber, J. (1997). Long short-term memory. Neural Computation, 9(8), 1735-1780. https://doi.org/10.1162/neco.1997.9.8.1735
-
-Cho, K., van Merriënboer, B., Gulcehre, C., Bahdanau, D., Bougares, F., Schwenk, H., & Bengio, Y. (2014). Learning phrase representations using RNN encoder–decoder for statistical machine translation. Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (pp. 1724-1734). Association for Computational Linguistics.
-
-Duchi, J., Hazan, E., & Singer, Y. (2011). Adaptive subgradient methods for online learning and stochastic optimization. Journal of Machine Learning Research, 12, 2121-2159.
-
-Tieleman, T., & Hinton, G. (2012). Lecture 6.5—RMSProp: Divide the gradient by a running average of its recent magnitude. COURSERA: Neural Networks for Machine Learning. University of Toronto.
-
-Kingma, D. P., & Ba, J. L. (2015). Adam: A method for stochastic optimization. International Conference on Learning Representations (ICLR 2015). https://arxiv.org/abs/1412.6980
----
 
 ### Licencia
 
