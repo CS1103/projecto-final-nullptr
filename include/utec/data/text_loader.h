@@ -28,7 +28,6 @@ namespace utec::data {
 
         // Métodos internos
         void build_vocabulary();
-        std::vector<std::string> tokenize(const std::string& text);
 
 
     public:
@@ -41,6 +40,7 @@ namespace utec::data {
         std::vector<float> vectorize(const std::string& text);
         void save_vocabulary(const std::string& path) const;
         void load_vocabulary(const std::string& path);
+        std::vector<std::string> tokenize(const std::string& text);
 
         // function to test
         const std::vector<std::string>& get_vocabulary_list() const;

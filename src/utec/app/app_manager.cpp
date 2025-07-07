@@ -14,6 +14,8 @@
 #include <iostream>
 #include <iomanip>
 #include <memory>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 using namespace utec::app;
@@ -92,14 +94,22 @@ void AppManager::train_model() {
 
     build_model();
 
+    // Cronometrar entrenamiento
+    auto start = chrono::high_resolution_clock::now();
+
     model.train<BCELoss>(X_train, Y_train, 20, 8, 0.1f);
+
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double, std::ratio<60>> elapsed_minutes = end - start;
+
 
     model_trained = true;
 
-    cout << "Entrenamiendo completado." << endl;
+    cout << fixed << setprecision(2);
+    cout << "Entrenamiendo completado en " << elapsed_minutes.count() << " minutos." << endl;
 
-    loader.save_vocabulary("models/vocabulary.txt");
-    model.save_model("models/model.txt");
+    loader.save_vocabulary("../models/vocabulary.txt");
+    model.save_model("../models/model.txt");
 }
 
 
@@ -162,13 +172,21 @@ void AppManager::predict_message() {
 void AppManager::load_trained_model() {
     cout << "\nCargando vocabulario y modelo entrenado..." << endl;
 
-    loader.load_vocabulary("../models/vocabulary.txt");
-    input_size = loader.get_vocabulary_size();
+    // Hilos en paralelo: cargar vocabulario y cargar modelo pre-entrenado
+    thread vocab_thread([&]() {
+        loader.load_vocabulary("../models/vocabulary.txt");
+        input_size = loader.get_vocabulary_size();
+        loader.load_data();
+    });
 
-    build_model();
-    model.load_model("../models/model.txt");
+    thread model_thread([&]() {
+        build_model();
+        model.load_model("../models/model.txt");
+    });
 
-    loader.load_data();
+    // join de hilos
+    vocab_thread.join();
+    model_thread.join();
 
     model_trained = true;
 

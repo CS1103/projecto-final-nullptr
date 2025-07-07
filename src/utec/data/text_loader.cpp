@@ -132,7 +132,7 @@ void TextLoader::save_vocabulary(const std::string &path) const {
         out << word << "\n";
 
     out.close();
-    std::cout << "Vocabulario guardado en " << path << std::endl;
+    std::cout << "Vocabulario guardado." << std::endl;
 }
 
 
