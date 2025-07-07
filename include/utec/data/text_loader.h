@@ -39,6 +39,10 @@ namespace utec::data {
         size_t get_vocabulary_size() const;
         int get_label(const std::string& label_text);
         std::vector<float> vectorize(const std::string& text);
+        void save_vocabulary(const std::string& path) const;
+        void load_vocabulary(const std::string& path);
+
+        // function to test
         const std::vector<std::string>& get_vocabulary_list() const;
     };
 

@@ -9,9 +9,12 @@
 #include "utec/nn/nn_interfaces.h"
 #include "utec/nn/nn_optimizer.h"
 #include "utec/nn/nn_loss.h"
+#include "utec/nn/nn_dense.h"
 #include <vector>
 #include <memory>
 #include <algorithm>
+
+#include "nn_activation.h"
 
 namespace utec::neural_network {
 
@@ -86,6 +89,78 @@ namespace utec::neural_network {
                     optimizer.step(); // para Adam, ignorado por SGD
                 }
             }
+        }
+
+        // Funciones para la IA pre-entrenada
+        void save_model(const std::string& path) const {
+            std::ofstream out(path);
+            if (!out.is_open()) {
+                std::cerr << "No se pudo abrir el archivo para guardar el modelo: " << path << std::endl;
+                return;
+            }
+
+            for (const auto& layer: layers_) {
+                auto* dense_layer = dynamic_cast<Dense<T>*>(layer.get());
+                if (dense_layer) {
+                    out << "Dense\n";
+                    dense_layer -> save_layer(out);
+                    continue;
+                }
+
+                auto* relu_layer = dynamic_cast<ReLU<T>*>(layer.get());
+                if (relu_layer) {
+                    out << "ReLU\n";
+                    continue;
+                }
+
+                auto* sigmoid_layer = dynamic_cast<Sigmoid<T>*>(layer.get());
+                if (sigmoid_layer) {
+                    out << "Sigmoid\n";
+                    continue;
+                }
+            }
+
+            out.close();
+            std::cout << "Modelo guardado." << std::endl;
+        }
+
+        void load_model(const std::string& path) {
+            std::ifstream in(path);
+            if (!in.is_open()) {
+                std::cerr << "No se pudo abrir el archivo para cargar el modelo." << std::endl;
+                return;
+            }
+
+            std::string layer_type;
+
+            for (auto& layer: layers_) {
+                in >> layer_type;
+
+                if (layer_type == "Dense") {
+                    auto* dense_layer = dynamic_cast<Dense<T>*>(layer.get());
+                    if (dense_layer) {
+                        dense_layer -> load_layer(in);
+                    } else {
+                        std::cerr << "Error: se esperaba Dense pero se encontro otra capa." << std::endl;
+                        return;
+                    }
+                } else if (layer_type == "ReLU") {
+                    if (dynamic_cast<ReLU<T>*>(layer.get()) == nullptr) {
+                        std::cerr << "Error: se esperaba ReLU pero se encontró otra capa." << std::endl;
+                        return;
+                    }
+                } else if (layer_type == "Sigmoid") {
+                    if (dynamic_cast<Sigmoid<T>*>(layer.get()) == nullptr) {
+                        std::cerr << "Error: se esperaba Sigmoid pero se encontro otra capa." << std::endl;
+                        return;
+                    }
+                } else {
+                    std::cerr << "Error: capa desconocida: " << layer_type << std::endl;
+                    return;
+                }
+            }
+            in.close();
+            std::cout << "Modelo cargado correctamente." << std::endl;
         }
     };
 

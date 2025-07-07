@@ -7,6 +7,7 @@
 
 
 #include "utec/nn/nn_interfaces.h"
+#include <fstream>
 #include <functional>
 
 namespace utec::neural_network {
@@ -73,6 +74,37 @@ namespace utec::neural_network {
             for (size_t j = 0; j < db_.shape()[0]; ++j) {
                 b_(j) = b2d(0, j);
             }
+        }
+
+        // Funciones para la IA pre-entrenada
+        void save_layer(std::ofstream& out) const {
+            size_t rows = W_.shape()[0];
+            size_t cols = W_.shape()[1];
+
+            out << rows << " " << cols << "\n";
+
+            for (size_t i = 0; i < rows; ++i)
+                for (size_t j = 0; j < cols; ++j)
+                    out << W_(i, j) << " ";
+            out << "\n";
+
+            for (size_t j = 0; j < b_.shape()[0]; ++j)
+                out << b_(j) << " ";
+            out << "\n";
+        }
+
+        void load_layer(std::ifstream& in) {
+            size_t rows, cols;
+            in >> rows >> cols;
+
+            W_ = Tensor<T, 2>(rows, cols);
+            for(size_t i = 0; i < rows; ++i)
+                for (size_t j = 0; j < cols; ++j)
+                    in >> W_(i, j);
+
+            b_ = Tensor<T, 1>(cols);
+            for (size_t j = 0; j < cols; ++j)
+                in >> b_(j);
         }
     };
 

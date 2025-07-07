@@ -29,7 +29,7 @@ namespace {
     // dos opciones de lenguaje (no recomendado cambiar)
     // - training_words_esp.csv (database debil)
     // - training_words_eng.csv (preferible)
-    TextLoader loader("data/training_words_esp.csv");
+    TextLoader loader("../data/training_words_eng.csv");
 
 
     size_t input_size = 0;
@@ -58,7 +58,8 @@ void AppManager::show_menu() {
         cout << "1. Entrenar IA" << endl;
         cout << "2. Probar IA" << endl;
         cout << "3. Predecir mensaje" << endl;
-        cout << "4. Ejecutar tests" << endl;
+        cout << "4. Cargar IA entrenada" << endl;
+        cout << "5. Ejecutar tests" << endl;
         cout << "0. Salir" << endl;
         cout << "Seleccione una opcion: ";
         cin >> option;
@@ -68,7 +69,8 @@ void AppManager::show_menu() {
             case 1: train_model(); break;
             case 2: test_model(); break;
             case 3: predict_message(); break;
-            case 4: run_tests(); break;
+            case 4: load_trained_model(); break;
+            case 5: run_tests(); break;
             case 0: cout << "Saliendo..." << endl; break;
             default: cout << "Opcion invalida" << endl; break;
         }
@@ -95,6 +97,9 @@ void AppManager::train_model() {
     model_trained = true;
 
     cout << "Entrenamiendo completado." << endl;
+
+    loader.save_vocabulary("models/vocabulary.txt");
+    model.save_model("models/model.txt");
 }
 
 
@@ -153,6 +158,26 @@ void AppManager::predict_message() {
     else
         cout << "El mensaje NO es SPAM" << endl;
 }
+
+void AppManager::load_trained_model() {
+    cout << "\nCargando vocabulario y modelo entrenado..." << endl;
+
+    loader.load_vocabulary("models/vocabulary.txt");
+    input_size = loader.get_vocabulary_size();
+
+    build_model();
+    model.load_model("models/model.txt");
+
+    loader.load_data();
+
+    model_trained = true;
+
+    cout << "Vocabulario cargado." << endl;
+    cout << "Modelo cargado." << endl;
+
+    cout << " [ Modelo listo para ser usado ]" << endl;
+}
+
 
 void AppManager::run_tests() {
     cout << "\nPruebas automaticas no implementadas todavia." << endl;

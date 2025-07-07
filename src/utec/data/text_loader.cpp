@@ -7,7 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <unordered_set>
+#include <set>
 #include <algorithm>
 
 using namespace utec::data;
@@ -57,7 +57,7 @@ void TextLoader::build_vocabulary() {
     // Ignorar cabecera
     std::getline(file, line);
 
-    std::unordered_set<std::string> unique_words;
+    std::set<std::string> unique_words;
 
     while (std::getline(file, line)) {
         std::stringstream ss(line);
@@ -70,7 +70,7 @@ void TextLoader::build_vocabulary() {
         unique_words.insert(words.begin(), words.end());
     }
 
-    // Mapea las palabras con un índice
+    // Mapea las palabras con un indice
     int index = 0;
     for (const auto& word : unique_words) {
         vocabulary_list_.push_back(word);
@@ -119,6 +119,45 @@ const std::vector<TextExample>& TextLoader::get_dataset() const {
 size_t TextLoader::get_vocabulary_size() const {
     return vocabulary_.size();
 }
+
+
+void TextLoader::save_vocabulary(const std::string &path) const {
+    std::ofstream out(path);
+    if (!out.is_open()) {
+        std::cerr << "No se pudo abrir el archivo para guardar el vocabulario: " << path << std::endl;
+        return;
+    }
+
+    for (const auto& word: vocabulary_list_)
+        out << word << "\n";
+
+    out.close();
+    std::cout << "Vocabulario guardado en " << path << std::endl;
+}
+
+
+void TextLoader::load_vocabulary(const std::string &path) {
+    std::ifstream in(path);
+    if (!in.is_open()) {
+        std::cerr << "No se pudo abrir el archivo del vocabulario." << std::endl;
+        return;
+    }
+
+    vocabulary_list_.clear();
+    vocabulary_.clear();
+
+    std::string word;
+    int index = 0;
+
+    while (std::getline(in, word)) {
+        vocabulary_list_.push_back(word);
+        vocabulary_[word] = index++;
+    }
+
+    in.close();
+    std::cout << "Vocabulario cargado." << std::endl;
+}
+
 
 
 const std::vector<std::string>& TextLoader::get_vocabulary_list() const {
