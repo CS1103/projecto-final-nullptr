@@ -162,11 +162,11 @@ void AppManager::predict_message() {
 void AppManager::load_trained_model() {
     cout << "\nCargando vocabulario y modelo entrenado..." << endl;
 
-    loader.load_vocabulary("models/vocabulary.txt");
+    loader.load_vocabulary("../models/vocabulary.txt");
     input_size = loader.get_vocabulary_size();
 
     build_model();
-    model.load_model("models/model.txt");
+    model.load_model("../models/model.txt");
 
     loader.load_data();
 
