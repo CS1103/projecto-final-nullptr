@@ -25,13 +25,14 @@
 * **Tema**: Redes Neuronales en AI
 * **Grupo**: `grupo_7_nullptr`
 * **Integrantes**:
-
-    * José Daniel Huamán Rosales – 209900001 (Responsable de investigación teórica)
-    * Juan Carlos Ticlia Malqui – 209900002 (Desarrollo de la arquitectura)
-    * Paulo Isael Miranda Barrietos – 202410580 (Implementación del modelo)
-    * Elmer José Villegas Suarez – 209900004 (Pruebas y benchmarking)
-    * [Nombre del quinto integrante] – 209900005 (Documentación y demo)
-
+```
+      ALUMNO                        CODIGO       ROL
+    José Daniel Huamán Rosales     209900001   (Responsable de investigación teórica)
+    Juan Carlos Ticlia Malqui      202410584   (Desarrollo de la arquitectura)
+    Paulo Isael Miranda Barrietos  202410580   (Implementación del modelo)
+    Elmer José Villegas Suarez     202410032   (Pruebas y benchmarking)
+    [Nombre del quinto integrante]  209900005  (Documentación y demo)
+```
 ---
 
 ### Requisitos e instalación
