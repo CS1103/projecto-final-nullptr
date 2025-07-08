@@ -30,7 +30,6 @@
     * Juan Carlos Ticlia Malqui – 209900002 (Desarrollo de la arquitectura)
     * Paulo Isael Miranda Barrietos – 209900003 (Implementación del modelo)
     * Elmer José Villegas Suarez – 209900004 (Pruebas y benchmarking)
-    * [Nombre del quinto integrante] – 209900005 (Documentación y demo)
 
 ---
 
