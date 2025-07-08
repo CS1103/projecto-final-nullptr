@@ -28,8 +28,9 @@
 
     * José Daniel Huamán Rosales – 209900001 (Responsable de investigación teórica)
     * Juan Carlos Ticlia Malqui – 209900002 (Desarrollo de la arquitectura)
-    * Paulo Isael Miranda Barrietos – 209900003 (Implementación del modelo)
+    * Paulo Isael Miranda Barrietos – 202410580 (Implementación del modelo)
     * Elmer José Villegas Suarez – 209900004 (Pruebas y benchmarking)
+    * [Nombre del quinto integrante] – 209900005 (Documentación y demo)
 
 ---
 
