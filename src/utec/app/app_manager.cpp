@@ -61,7 +61,6 @@ void AppManager::show_menu() {
         cout << "2. Probar IA" << endl;
         cout << "3. Predecir mensaje" << endl;
         cout << "4. Cargar IA entrenada" << endl;
-        cout << "5. Ejecutar tests" << endl;
         cout << "0. Salir" << endl;
         cout << "Seleccione una opcion: ";
         cin >> option;
@@ -72,7 +71,6 @@ void AppManager::show_menu() {
             case 2: test_model(); break;
             case 3: predict_message(); break;
             case 4: load_trained_model(); break;
-            case 5: run_tests(); break;
             case 0: cout << "Saliendo..." << endl; break;
             default: cout << "Opcion invalida" << endl; break;
         }
@@ -195,11 +193,3 @@ void AppManager::load_trained_model() {
 
     cout << " [ Modelo listo para ser usado ]" << endl;
 }
-
-
-void AppManager::run_tests() {
-    cout << "\nPruebas automaticas no implementadas todavia." << endl;
-}
-
-
-

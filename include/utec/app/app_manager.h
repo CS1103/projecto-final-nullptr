@@ -15,7 +15,6 @@ namespace utec::app {
         void test_model();
         void predict_message();
         void load_trained_model();
-        void run_tests();
     };
 }
 
