@@ -40,7 +40,7 @@
 1. **Compilador**: GCC 11 o superior (C++20)
 2. **Dependencias**:
 
-    * CMake 3.28+
+    * CMake 3.20+
     * Compilador compatible con C++20
 3. **Instalación**:
 
