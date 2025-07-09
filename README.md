@@ -137,7 +137,7 @@ Las **redes neuronales artificiales (RNA)** nacen en la década de 1940 dentro d
 * `Dense(|V|→128) → ReLU → Dropout(0.3) → Dense(128→1) → Sigmoid`.
 4. **Entrenamiento**
 
-* `Batch=8`, `SGD, η=0.1`, 20 épocas, pérdida BCE (configuración actual del proyecto).
+* `Batch=8`, `Adam, η=0.01`, 20 épocas, pérdida BCE (configuración actual del proyecto).
 5. **Métricas**
 
 * Accuracy, *precision*, *recall* y **F1** (más relevante en clases desequilibradas).
@@ -259,7 +259,7 @@ El sistema de red neuronal se puede ejecutar de múltiples maneras según las ne
 
 Este comando lanza un sistema interactivo que permite:
 
-* **Entrenar IA**: Ejecuta `train_model()` que carga datos SMS con `TextLoader::load_data()`, construye el modelo del detector con `build_model()`, entrena con `model.train<BCELoss>()` y guarda el modelo con `save_model()` y `save_vocabulary()`
+* **Entrenar IA**: Ejecuta `train_model()` que carga datos SMS con `TextLoader::load_data()`, construye el modelo del detector con `build_model()`, entrena con `model.train<BCELoss, Adam>()` y guarda el modelo con `save_model()` y `save_vocabulary()`
 
 * **Probar IA**: Ejecuta `test_model()` que evalúa el detector de spam en el conjunto de prueba usando `DatasetUtils::split_dataset()`, `vector_to_tensor()`, `labels_to_tensor()` y `model.predict()`
 
@@ -324,6 +324,14 @@ El sistema incluye una suite completa de tests unitarios que valida el correcto 
   * **Carga de modelo**: Restauración de pesos y arquitectura con `load_model()` del detector entrenado
   * **Inferencia post-carga**: Validación de predicciones consistentes con `predict()` para clasificación spam/ham
   * **Integración completa**: Verificación del flujo completo de carga y predicción de mensajes SMS
+
+**e) Test de convergencia con Adam (test_convergence_adam)**
+
+* **Ejecutable**: `./build/test_convergence_adam`
+* **Propósito**: Verifica que el optimizador Adam logra convergencia en una tarea lógica simple (OR).
+* **Casos específicos cubiertos**:
+  * Entrenamiento de una red neuronal pequeña con Adam en el problema OR.
+  * Validación de que la pérdida final es baja (convergencia).
 
 **Criterios de éxito**
 

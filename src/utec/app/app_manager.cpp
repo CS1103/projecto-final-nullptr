@@ -96,7 +96,7 @@ void AppManager::train_model() {
     // Cronometrar entrenamiento
     auto start = chrono::high_resolution_clock::now();
 
-    model.train<BCELoss>(X_train, Y_train, 20, 8, 0.1f);
+    model.train<BCELoss, Adam>(X_train, Y_train, 20, 8, 0.01f);
 
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double, std::ratio<60>> elapsed_minutes = end - start;
