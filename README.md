@@ -224,12 +224,12 @@ projecto_final_nullptr/
 │           ├── dataset_utils.cpp
 │           └── text_loader.cpp
 ├── tests/                        # Tests
-│   ├── app_manager_load_ai_test.cpp
 │   ├── catch_main.cpp
-│   ├── neural_network_test.cpp
-│   ├── stopwords_test.cpp
-│   ├── tensor_test.cpp
-│   └── text_loader_test.cpp
+│   ├── test_app_manager_load_ai.cpp
+│   ├── test_neural_network.cpp
+│   ├── test_stopwords.cpp
+│   ├── test_tensor.cpp
+│   └── test_text_loader.cpp
 └── tools/                        # catch2
 │   └── catch/
 │       └── catch.hpp.cpp
