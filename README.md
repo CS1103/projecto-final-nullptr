@@ -142,7 +142,7 @@ Las **redes neuronales artificiales (RNA)** nacen en la década de 1940 dentro d
 * Accuracy, *precision*, *recall* y **F1** (más relevante en clases desequilibradas).
 6. **Persistencia**
 
-* Serializar pesos (`.bin`) + vocabulario (`.json`) para inferencia.
+* Serializar pesos (models/model.txt) + vocabulario (models/vocabulary.txt) para inferencia.
 7. **Escalabilidad**
 
 * Para >100 k correos, compilar con OpenBLAS multihilo o exportar a ONNX y usar GPU.
