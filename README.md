@@ -413,7 +413,7 @@ Una ejecución exitosa de todos los tests garantiza que el detector de spam est�
 **Configuración del modelo:**
 - Arquitectura: MLP con 2 capas densas
 - Activaciones: ReLU + Sigmoid
-- Optimizador: SGD con learning rate 0.1
+- Optimizador: Adam con learning rate 0.01
 - Batch size: 8
 - Épocas: 20
 
