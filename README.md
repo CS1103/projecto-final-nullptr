@@ -400,9 +400,10 @@ Una ejecución exitosa de todos los tests garantiza que el detector de spam est�
    ```
 
 3. **Usar el menú interactivo:**
-    - Seleccionar opción 1 para entrenar el modelo
-    - Seleccionar opción 2 para evaluar el rendimiento
-    - Seleccionar opción 3 para clasificar un mensaje personalizado
+    - Seleccionar opción 1 para entrenar IA
+    - Seleccionar opción 2 para probar IA
+    - Seleccionar opción 3 para predecir mensaje
+    - Seleccionar opción 4 para cargar IA entrenada
     - Seleccionar opción 0 para salir
 
 **Dataset utilizado:**
@@ -420,34 +421,52 @@ Una ejecución exitosa de todos los tests garantiza que el detector de spam est�
 
 ### 4. Análisis del rendimiento
 
-**Métricas del modelo implementado:**
+#### Métricas del modelo implementado
 
-* **Arquitectura**: MLP con capa oculta de 16 neuronas
-* **Dataset**: 2002 mensajes en español (80% entrenamiento, 20% prueba)
-* **Tiempo de entrenamiento**: ~30-60 segundos (dependiendo del hardware)
-* **Precisión esperada**: 85-90% en el conjunto de prueba
-* **Funciones de activación**: ReLU (capa oculta) + Sigmoid (salida)
-* **Función de pérdida**: Binary Cross-Entropy
+- **Arquitectura:** MLP con capa oculta de 16 neuronas
+- **Dataset:** 2002 mensajes en español y 5574 mensajes en inglés (80% entrenamiento, 20% prueba)
+- **Funciones de activación:** ReLU (capa oculta) + Sigmoid (salida)
+- **Función de pérdida:** Binary Cross-Entropy (BCELoss)
+- **Optimizadores probados:** SGD y Adam
+- **Batch size:** 8
+- **Épocas:** 20
+- **Precisión esperada:** >95% (en la mayoría de casos superior al 99%)
+- **Tiempo de entrenamiento:** ver tabla comparativa abajo
 
-**Ventajas del enfoque:**
-* ✅ Implementación desde cero sin dependencias externas
-* ✅ Código modular y extensible
-* ✅ Interfaz de usuario intuitiva
-* ✅ Soporte para diferentes idiomas
-* ✅ Preprocesamiento con eliminación de stopwords para mejorar la calidad de los datos
+#### Resultados comparativos de entrenamiento
 
-**Limitaciones actuales:**
-* ❌ Sin paralelización, rendimiento limitado en datasets grandes
-* ❌ Vocabulario fijo, no adaptativo
-* ❌ Sin optimizadores avanzados adicionales (RMSProp, AdaGrad)
+| Optimizador | Stopwords | Tiempo de entrenamiento | Precisión (dataset)         |
+|-------------|-----------|------------------------|-----------------------------|
+| SGD         | No        | 20.48 min              | >95% (usualmente >99%)      |
+| SGD         | Sí        | 14.34 min              | >95% (usualmente >99%)      |
+| Adam        | No        | 48.74 min              | >95% (usualmente >99%)      |
+| Adam        | Sí        | 34.12 min              | >95% (usualmente >99%)      |
 
-**Mejoras futuras propuestas:**
-* Implementar optimizadores adaptativos adicionales (RMSProp, AdaGrad)
-* Añadir soporte para embeddings de palabras
-* Implementar vectorización TF-IDF
-* Implementar vectorización basada en n-gramas
-* Paralelizar entrenamiento con OpenMP
-* Implementar early stopping y regularización
+**Justificación de Adam y BCELoss:**
+Se utiliza el optimizador Adam [4] por su eficiencia y robustez en tareas de clasificación, ya que ajusta la tasa de aprendizaje de manera adaptativa y acelera la convergencia en comparación con SGD tradicional. Para la función de pérdida, se emplea Binary Cross-Entropy (BCELoss) [4], que es la opción estándar para problemas de clasificación binaria, ya que penaliza fuertemente las predicciones incorrectas y modela la probabilidad de pertenencia a la clase spam de manera adecuada.
+
+#### Ventajas del enfoque
+
+- ✅ Implementación desde cero sin dependencias externas
+- ✅ Código modular y extensible
+- ✅ Interfaz de usuario intuitiva
+- ✅ Soporte para diferentes idiomas
+- ✅ Preprocesamiento con eliminación de stopwords para mejorar la calidad de los datos
+
+#### Limitaciones actuales
+
+- ❌ Sin paralelización, rendimiento limitado en datasets grandes
+- ❌ Vocabulario fijo, no adaptativo
+- ❌ Sin optimizadores avanzados adicionales (RMSProp, AdaGrad)
+
+#### Mejoras futuras propuestas
+
+- Implementar optimizadores adaptativos adicionales (RMSProp, AdaGrad)
+- Añadir soporte para embeddings de palabras
+- Implementar vectorización TF-IDF
+- Implementar vectorización basada en n-gramas
+- Paralelizar entrenamiento con OpenMP
+- Implementar early stopping y regularización
 
 ---
 
@@ -533,22 +552,3 @@ Una ejecución exitosa de todos los tests garantiza que el detector de spam est�
 ### Licencia
 
 Este proyecto usa la licencia **MIT**. Ver [LICENSE](LICENSE) para detalles.
-
----
-
-### Resultados comparativos de entrenamiento
-
-| Optimizador | Stopwords | Tiempo de entrenamiento | Precisión (dataset) |
-|-------------|-----------|------------------------|---------------------|
-| SGD         | No        | 20.48 min              | >95% (usualmente >99%) |
-| SGD         | Sí        | 14.34 min              | >95% (usualmente >99%) |
-| Adam        | No        | 48.74 min              | >95% (usualmente >99%) |
-| Adam        | Sí        | 34.12 min              | >95% (usualmente >99%) |
-
-**Justificación de Adam y BCELoss:**
-
-Se utiliza el optimizador Adam [4] por su eficiencia y robustez en tareas de clasificación, ya que ajusta la tasa de aprendizaje de manera adaptativa y acelera la convergencia en comparación con SGD tradicional. Para la función de pérdida, se emplea Binary Cross-Entropy (BCELoss) [4], que es la opción estándar para problemas de clasificación binaria, ya que penaliza fuertemente las predicciones incorrectas y modela la probabilidad de pertenencia a la clase spam de manera adecuada.
-
-**Funciones de activación:**
-
-Se utiliza ReLU (Rectified Linear Unit) en las capas ocultas por su eficiencia computacional y su capacidad para mitigar el problema del gradiente desvanecido en redes profundas [5]. Para la capa de salida, se emplea la función Sigmoid, que transforma la salida en una probabilidad entre 0 y 1, ideal para tareas de clasificación binaria como la detección de spam [4].
