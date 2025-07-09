@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 
 namespace utec::data {
 
@@ -25,6 +26,7 @@ namespace utec::data {
         std::vector<TextExample> dataset_;
         std::unordered_map<std::string, int> vocabulary_;
         std::vector<std::string> vocabulary_list_;
+        std::unordered_set<std::string> stopwords_;
 
         // Métodos internos
         void build_vocabulary();
@@ -40,6 +42,7 @@ namespace utec::data {
         std::vector<float> vectorize(const std::string& text);
         void save_vocabulary(const std::string& path) const;
         void load_vocabulary(const std::string& path);
+        void load_stopwords(const std::string& path);
         std::vector<std::string> tokenize(const std::string& text);
 
         // function to test

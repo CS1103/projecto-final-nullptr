@@ -81,6 +81,7 @@ void AppManager::show_menu() {
 void AppManager::train_model() {
     cout << "\nCargando datos y entrenando IA..." << endl;
 
+    loader.load_stopwords("../data/stopwords_eng.txt");
     loader.load_data();
     input_size = loader.get_vocabulary_size();
 
@@ -172,6 +173,7 @@ void AppManager::load_trained_model() {
 
     // Hilos en paralelo: cargar vocabulario y cargar modelo pre-entrenado
     thread vocab_thread([&]() {
+        loader.load_stopwords("../data/stopwords_eng.txt");
         loader.load_vocabulary("../models/vocabulary.txt");
         input_size = loader.get_vocabulary_size();
         loader.load_data();
@@ -187,9 +189,6 @@ void AppManager::load_trained_model() {
     model_thread.join();
 
     model_trained = true;
-
-    cout << "Vocabulario cargado." << endl;
-    cout << "Modelo cargado." << endl;
 
     cout << " [ Modelo listo para ser usado ]" << endl;
 }

@@ -89,7 +89,8 @@ std::vector<std::string> TextLoader::tokenize(const std::string& text) {
         // Normalizamos quitando signos y poniendo en minúsculas
         word.erase(std::remove_if(word.begin(), word.end(), ispunct), word.end());
         std::transform(word.begin(), word.end(), word.begin(), ::tolower);
-        tokens.push_back(word);
+        if (stopwords_.empty() or !stopwords_.count(word))
+            tokens.push_back(word);
     }
 
     return tokens;
@@ -157,6 +158,24 @@ void TextLoader::load_vocabulary(const std::string &path) {
     in.close();
     std::cout << "Vocabulario cargado." << std::endl;
 }
+
+
+void TextLoader::load_stopwords(const std::string &path) {
+    std::ifstream in(path);
+    if (!in.is_open()) {
+        std::cerr << "No se pudo abrir el archivo de las stopwords: " << path << "\n";
+        return;
+    }
+
+    std::string word;
+    while (std::getline(in, word)) {
+        if (!word.empty()) {
+            stopwords_.insert(word);
+        }
+    }
+    in.close();
+}
+
 
 
 
