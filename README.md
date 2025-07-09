@@ -26,11 +26,11 @@
 * **Grupo**: `grupo_7_nullptr`
 * **Integrantes**:
 ```
-      ALUMNO                        CODIGO       ROL
-    José Daniel Huamán Rosales     209900001   (Responsable de investigación teórica)
-    Juan Carlos Ticlia Malqui      202410584   (Desarrollo de la arquitectura)
-    Paulo Isael Miranda Barrietos  202410580   (Implementación del modelo, documentación y demo)
-    Elmer José Villegas Suarez     202410032   (Pruebas y benchmarking)
+      ALUMNO                              CODIGO       ROL
+    José Daniel Huamán Rosales           202410576   (Responsable de investigación teórica)
+    Elmer José Manuel Villegas Suarez    202410032   (Desarrollo de la arquitectura)
+    Paulo Isael Miranda Barrietos        202410580   (Implementación del modelo, documentación y demo)
+    Juan Carlos Ticlia Malqui            202410584   (Pruebas y benchmarking)
 ```
 ---
 
