@@ -83,8 +83,8 @@ Las **redes neuronales artificiales (RNA)** nacen en la década de 1940 dentro d
 | Arquitectura                     | Idea esencial                                                                                   | Por qué sirve en un clasificador de spam                                                                                                          |
 | -------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **MLP** (feed-forward denso)     | Multiplica vectores de características por matrices de pesos y aplica activaciones no lineales. | Nuestro **Bag-of-Words vectorizado** produce vectores densos (o dispersos) de tamaño \|vocab\|; un MLP aprende directamente la frontera ham/spam. |
-| **CNN 1-D**                      | Convolución en la dimensión de la secuencia; detecta *n-gramas* locales con pesos compartidos.  | Frases como "free \$\$\$" o "click aquí" se detectan como patrones locales independientemente de su posición.                                     |
-| **RNN / LSTM / GRU**             | Mantienen un estado oculto que se actualiza token a token.                                      | Útil si queremos modelar la **dependencia de orden** entre palabras en vez de tratarlas como bolsa.                                               |
+| *(Mención)* **CNN 1-D**                      | Convolución en la dimensión de la secuencia; detecta *n-gramas* locales con pesos compartidos.  | Frases como "free \$\$\$" o "click aquí" se detectan como patrones locales independientemente de su posición.                                     |
+| *(Mención)* **RNN / LSTM / GRU**             | Mantienen un estado oculto que se actualiza token a token.                                      | Útil si queremos modelar la **dependencia de orden** entre palabras en vez de tratarlas como bolsa.                                               |
 | *(Mención)* **Transformer/BERT** | Auto-atención bidireccional; se pre-entrena con corpus masivo.                                  | En producción podríamos exportar a ONNX y usar `onnx-runtime`, pero supera el alcance de un laboratorio C++ puro.                                 |
 
 ---
@@ -93,11 +93,15 @@ Las **redes neuronales artificiales (RNA)** nacen en la década de 1940 dentro d
 
 1. **Retropropagación**: aplica la regla de la cadena para computar $\partial\mathcal L/\partial\theta$ capa por capa desde la salida hasta la entrada.
 2. **Descenso de gradiente estocástico (SGD)** con *mini-batch* ajusta los pesos $\theta \leftarrow \theta - \eta\nabla\mathcal L$.
-3. **Optimizadores adaptativos**:
+3. **Optimizadores implementados en el proyecto**:
+
+* **SGD** (implementado): Optimizador básico con tasa de aprendizaje fija; útil para problemas simples y como base de comparación.
+* **Adam** (implementado): Combina momento y adaptación de tasa de aprendizaje; converge rápido y es el estándar en proyectos de spam académicos.
+
+4. **Optimizadores mencionados para referencia teórica**:
 
 * **AdaGrad** (2011) adapta la tasa de aprendizaje por parámetro; útil si el vector de entrada es muy disperso como en BoW.
 * **RMSProp** (2012) suaviza AdaGrad con una media exponencial de gradientes al cuadrado.
-* **Adam** (2015) combina momento y RMSProp; converge rápido y es el estándar en proyectos de spam académicos.
 
 ---
 
@@ -115,7 +119,7 @@ Las **redes neuronales artificiales (RNA)** nacen en la década de 1940 dentro d
 
 * En un **MLP**: `Matrix X (B×|V|)` × `Matrix Wᵀ (hidden×|V|)` → `Z`.
 * Con **Eigen** o **OpenBLAS** (`cblas_sgemm`) esta multiplicación usa SIMD y multihilo; en GPU, cuBLAS/cuDNN.
-* Las CNN 1-D convierten la convolución en *im2col* + GEMM, reutilizando la misma infraestructura.
+* *(Mención)* Las CNN 1-D convierten la convolución en *im2col* + GEMM, reutilizando la misma infraestructura.
 
 ---
 
@@ -124,7 +128,7 @@ Las **redes neuronales artificiales (RNA)** nacen en la década de 1940 dentro d
 1. **Carga y preprocesamiento** (`TextLoader`)
 
 * Tokenización + stop-words + minúsculas.
-* Construcción de vocabulario con **min\_freq≥5**.
+* Construcción de vocabulario a partir de todas las palabras presentes en el dataset.
 2. **Vectorización**
 
 * Empezar con BoW; añadir TF-IDF como mejora.
@@ -133,7 +137,7 @@ Las **redes neuronales artificiales (RNA)** nacen en la década de 1940 dentro d
 * `Dense(|V|→128) → ReLU → Dropout(0.3) → Dense(128→1) → Sigmoid`.
 4. **Entrenamiento**
 
-* `Batch=64`, `Adam, η=1e-3`, 10-20 épocas, pérdida BCE.
+* `Batch=8`, `SGD, η=0.1`, 20 épocas, pérdida BCE (configuración actual del proyecto).
 5. **Métricas**
 
 * Accuracy, *precision*, *recall* y **F1** (más relevante en clases desequilibradas).
@@ -311,9 +315,9 @@ El sistema incluye una suite completa de tests unitarios que valida el correcto 
   * **Vectorización BoW**: Conversión de mensajes SMS a vectores numéricos con `vectorize()`
   * **Persistencia**: Guardado y carga de vocabularios con `save_vocabulary()` y `load_vocabulary()`
 
-**d) Test de carga de IA pre-entrenada (app_manager_load_ai_test)**
+**d) Test de carga de IA pre-entrenada (test_app_manager_load_ai)**
 
-* **Ejecutable**: `./build/app_manager_load_ai_test`
+* **Ejecutable**: `./build/test_app_manager_load_ai`
 * **Propósito**: Verifica la funcionalidad de persistencia y carga de modelos del detector de spam
 * **Casos específicos cubiertos**:
   * **Carga de vocabulario**: Restauración del mapeo palabra-índice desde archivo para procesar nuevos mensajes
@@ -326,7 +330,7 @@ El sistema incluye una suite completa de tests unitarios que valida el correcto 
 Un sistema funcionando correctamente debe cumplir:
 
 * **Tasa de éxito**: 100% en todos los tests unitarios
-* **Convergencia**: Reducción demonstrable de la función de pérdida
+* **Convergencia**: Reducción demostrable de la función de pérdida
 * **Precisión**: Mejora significativa en métricas de evaluación
 * **Estabilidad**: Ausencia de errores numéricos o desbordamientos
 * **Rendimiento**: Tiempos de ejecución razonables
@@ -422,15 +426,18 @@ Una ejecución exitosa de todos los tests garantiza que el detector de spam est�
 * ✅ Código modular y extensible
 * ✅ Interfaz de usuario intuitiva
 * ✅ Soporte para diferentes idiomas
+* ✅ Preprocesamiento con eliminación de stopwords para mejorar la calidad de los datos
 
 **Limitaciones actuales:**
 * ❌ Sin paralelización, rendimiento limitado en datasets grandes
 * ❌ Vocabulario fijo, no adaptativo
-* ❌ Sin optimizadores avanzados (Adam, RMSProp)
+* ❌ Sin optimizadores avanzados adicionales (RMSProp, AdaGrad)
 
 **Mejoras futuras propuestas:**
-* Implementar optimizadores adaptativos (Adam, RMSProp)
+* Implementar optimizadores adaptativos adicionales (RMSProp, AdaGrad)
 * Añadir soporte para embeddings de palabras
+* Implementar vectorización TF-IDF
+* Implementar vectorización basada en n-gramas
 * Paralelizar entrenamiento con OpenMP
 * Implementar early stopping y regularización
 
@@ -474,8 +481,10 @@ Una ejecución exitosa de todos los tests garantiza que el detector de spam est�
 * Desarrollo de interfaces de usuario para aplicaciones de ML
 
 **Recomendaciones para futuras versiones:**
-* Implementar optimizadores avanzados (Adam, RMSProp)
+* Implementar optimizadores avanzados adicionales (RMSProp, AdaGrad)
 * Añadir soporte para embeddings y procesamiento de lenguaje natural
+* Implementar vectorización TF-IDF
+* Implementar vectorización basada en n-gramas
 * Escalar a datasets más grandes con paralelización
 * Implementar persistencia de modelos entrenados
 
