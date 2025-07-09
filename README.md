@@ -28,7 +28,7 @@
 ```
       ALUMNO                              CODIGO       ROL
     José Daniel Huamán Rosales           202410576   (Responsable de investigación teórica)
-    Elmer José Manuel Villegas Suarez    202410032   (Desarrollo de la arquitectura)
+    Elmer Jose Manuel Villegas Suarez    202410032   (Desarrollo de la arquitectura)
     Paulo Isael Miranda Barrietos        202410580   (Implementación del modelo, documentación y demo)
     Juan Carlos Ticlia Maqui            202410584   (Pruebas y benchmarking)
 ```
@@ -236,7 +236,7 @@ projecto_final_nullptr/
 │   └── test_text_loader.cpp
 └── tools/                        # catch2
 │   └── catch/
-│       └── catch.hpp.cpp
+│       └── catch.hpp
 ├── .gitignore
 ├── CMakeLists.txt
 ├── LICENSE.md
@@ -436,11 +436,11 @@ Una ejecución exitosa de todos los tests garantiza que el detector de spam est�
 #### Resultados comparativos de entrenamiento
 
 | Optimizador | Stopwords | Tiempo de entrenamiento | Precisión (dataset)         |
-|-------------|-----------|------------------------|-----------------------------|
-| SGD         | No        | 20.48 min              | >95% (usualmente >99%)      |
-| SGD         | Sí        | 14.34 min              | >95% (usualmente >99%)      |
-| Adam        | No        | 48.74 min              | >95% (usualmente >99%)      |
-| Adam        | Sí        | 34.12 min              | >95% (usualmente >99%)      |
+|-------------|-----------|-------------------------|-----------------------------|
+| SGD         | No        | 20.48 minutos           | >95% (usualmente >99%)      |
+| SGD         | Sí        | 14.34 minutos           | >95% (usualmente >99%)      |
+| Adam        | No        | 48.74 minutos           | >95% (usualmente >99%)      |
+| Adam        | Sí        | 34.12 minutos           | >95% (usualmente >99%)      |
 
 **Justificación de Adam y BCELoss:**
 Se utiliza el optimizador Adam [4] por su eficiencia y robustez en tareas de clasificación, ya que ajusta la tasa de aprendizaje de manera adaptativa y acelera la convergencia en comparación con SGD tradicional. Para la función de pérdida, se emplea Binary Cross-Entropy (BCELoss) [4], que es la opción estándar para problemas de clasificación binaria, ya que penaliza fuertemente las predicciones incorrectas y modela la probabilidad de pertenencia a la clase spam de manera adecuada.
@@ -472,12 +472,12 @@ Se utiliza el optimizador Adam [4] por su eficiencia y robustez en tareas de cla
 
 ### 5. Trabajo en equipo
 
-| Tarea                     | Miembro                          | Rol                                    |
-| ------------------------- |----------------------------------| -------------------------------------- |
-| Investigación teórica     | José Daniel Huamán Rosales       | Documentar fundamentos de redes neuronales |
-| Diseño de la arquitectura | Elmer José Mnauel Villegas Suarez | Diseño de clases y patrones de diseño |
-| Implementación del modelo | Paulo Isael Miranda Barrietos    | Código C++ de la red neuronal, demo y documentación   |
-| Pruebas y benchmarking    | Juan Carlos Ticlia Maqui         | Validación y métricas de rendimiento  |
+| Tarea                     | Miembro                           | Rol                                    |
+| ------------------------- |-----------------------------------| -------------------------------------- |
+| Investigación teórica     | José Daniel Huamán Rosales        | Documentar fundamentos de redes neuronales |
+| Diseño de la arquitectura | Elmer Jose Manuel Villegas Suarez | Diseño de clases y patrones de diseño |
+| Implementación del modelo | Paulo Isael Miranda Barrietos     | Código C++ de la red neuronal, demo y documentación   |
+| Pruebas y benchmarking    | Juan Carlos Ticlia Maqui          | Validación y métricas de rendimiento  |
 
 **Herramientas de colaboración:**
 * GitHub para control de versiones
