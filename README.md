@@ -30,7 +30,7 @@
     José Daniel Huamán Rosales           202410576   (Responsable de investigación teórica)
     Elmer José Manuel Villegas Suarez    202410032   (Desarrollo de la arquitectura)
     Paulo Isael Miranda Barrietos        202410580   (Implementación del modelo, documentación y demo)
-    Juan Carlos Ticlia Malqui            202410584   (Pruebas y benchmarking)
+    Juan Carlos Ticlia Maqui            202410584   (Pruebas y benchmarking)
 ```
 ---
 
@@ -472,12 +472,12 @@ Se utiliza el optimizador Adam [4] por su eficiencia y robustez en tareas de cla
 
 ### 5. Trabajo en equipo
 
-| Tarea                     | Miembro                      | Rol                                    |
-| ------------------------- | ---------------------------- | -------------------------------------- |
-| Investigación teórica     | José Daniel Huamán Rosales   | Documentar fundamentos de redes neuronales |
-| Diseño de la arquitectura | Juan Carlos Ticlia Malqui    | Diseño de clases y patrones de diseño |
-| Implementación del modelo | Paulo Isael Miranda Barrietos | Código C++ de la red neuronal, demo y documentación   |
-| Pruebas y benchmarking    | Elmer José Villegas Suarez   | Validación y métricas de rendimiento  |
+| Tarea                     | Miembro                          | Rol                                    |
+| ------------------------- |----------------------------------| -------------------------------------- |
+| Investigación teórica     | José Daniel Huamán Rosales       | Documentar fundamentos de redes neuronales |
+| Diseño de la arquitectura | Elmer José Mnauel Villegas Suarez | Diseño de clases y patrones de diseño |
+| Implementación del modelo | Paulo Isael Miranda Barrietos    | Código C++ de la red neuronal, demo y documentación   |
+| Pruebas y benchmarking    | Juan Carlos Ticlia Maqui         | Validación y métricas de rendimiento  |
 
 **Herramientas de colaboración:**
 * GitHub para control de versiones
