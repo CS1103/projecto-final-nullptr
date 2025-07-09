@@ -6,6 +6,11 @@
 
 > Implementación de una red neuronal multicapa en C++ para la detección automática de mensajes SMS spam, usando técnicas modernas de preprocesamiento y entrenamiento supervisado. El objetivo es explorar y demostrar la eficacia de arquitecturas simples y optimizadores modernos en la clasificación binaria de texto.
 
+### **Exposición**
+
+[▶️ Ver video de exposición](video_exposicion.mp4)
+[Link de la expo en drive]()
+
 ### Contenidos
 
 1. [Datos generales](#datos-generales)
