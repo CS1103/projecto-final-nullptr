@@ -193,6 +193,8 @@ Para garantizar la organización, la escalabilidad y la mantenibilidad del proye
 ```
 projecto_final_nullptr/
 ├── data/                         # Dataset CSV
+│   ├── stopwords_eng.csv
+│   ├── stopwords_test.csv
 │   ├── training_words_eng.csv
 │   └── training_words_esp.csv
 ├── include/                      # Cabeceras principales
