@@ -53,6 +53,13 @@ TEST_CASE("Test: Load trained IA and make a prediction", "[Integration]") {
 
     auto prediction = model.predict(input);
 
+    // sin desbordamientos
     REQUIRE(prediction(0, 0) >= 0.0f);
     REQUIRE(prediction(0, 0) <= 1.0f);
+
+    // validar prediccion
+    float predicted_label = prediction(0, 0) >= 0.5f ? 1.0f : 0.0f;
+    float actual_label = example.label;
+
+    REQUIRE(predicted_label == actual_label);
 }
