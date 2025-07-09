@@ -4,7 +4,7 @@
 
 ### **Descripción**
 
-> Implementación de una red neuronal multicapa en C++ para clasificación de mensajes SMS como spam o ham (legítimos).
+> Implementación de una red neuronal multicapa en C++ para la detección automática de mensajes SMS spam, usando técnicas modernas de preprocesamiento y entrenamiento supervisado. El objetivo es explorar y demostrar la eficacia de arquitecturas simples y optimizadores modernos en la clasificación binaria de texto.
 
 ### Contenidos
 
@@ -29,9 +29,8 @@
       ALUMNO                        CODIGO       ROL
     José Daniel Huamán Rosales     209900001   (Responsable de investigación teórica)
     Juan Carlos Ticlia Malqui      202410584   (Desarrollo de la arquitectura)
-    Paulo Isael Miranda Barrietos  202410580   (Implementación del modelo)
+    Paulo Isael Miranda Barrietos  202410580   (Implementación del modelo, documentación y demo)
     Elmer José Villegas Suarez     202410032   (Pruebas y benchmarking)
-    [Nombre del quinto integrante]  209900005  (Documentación y demo)
 ```
 ---
 
@@ -188,7 +187,7 @@ El patrón Factory tiene como objetivo delegar la creación de objetos a clases 
 
 * **Configuración de arquitectura**: Establece una arquitectura específica (input_size → 16 → 1) con ReLU como activación intermedia y Sigmoid como activación final, optimizada para clasificación binaria de spam.
 
-* **Inicialización de parámetros**: Utiliza funciones lambda para inicializar pesos y bias de manera consistente, permitiendo experimentar con diferentes estrategias de inicialización sin modificar la estructura del código.
+* **Inicialización de pesos:** En este proyecto, los pesos de las capas densas se inicializan a 0.01 y los bias a 0.0. Esta inicialización simple permite un arranque estable del entrenamiento, aunque en proyectos más grandes se recomienda el uso de técnicas como Xavier o He para redes profundas.
 
 ##### 2.1.2 Estructura de carpetas
 
@@ -230,6 +229,7 @@ projecto_final_nullptr/
 ├── tests/                        # Tests
 │   ├── catch_main.cpp
 │   ├── test_app_manager_load_ai.cpp
+│   ├── test_convergence_adam.cpp
 │   ├── test_neural_network.cpp
 │   ├── test_stopwords.cpp
 │   ├── test_tensor.cpp
@@ -457,9 +457,8 @@ Una ejecución exitosa de todos los tests garantiza que el detector de spam est�
 | ------------------------- | ---------------------------- | -------------------------------------- |
 | Investigación teórica     | José Daniel Huamán Rosales   | Documentar fundamentos de redes neuronales |
 | Diseño de la arquitectura | Juan Carlos Ticlia Malqui    | Diseño de clases y patrones de diseño |
-| Implementación del modelo | Paulo Isael Miranda Barrietos | Código C++ de la red neuronal         |
+| Implementación del modelo | Paulo Isael Miranda Barrietos | Código C++ de la red neuronal, demo y documentación   |
 | Pruebas y benchmarking    | Elmer José Villegas Suarez   | Validación y métricas de rendimiento  |
-| Documentación y demo      | [Quinto integrante]          | README y documentación del proyecto   |
 
 **Herramientas de colaboración:**
 * GitHub para control de versiones
@@ -526,8 +525,30 @@ Una ejecución exitosa de todos los tests garantiza que el detector de spam est�
 
 [12] T. Mikolov, K. Chen, G. Corrado, and J. Dean, "Efficient estimation of word representations in vector space," *arXiv preprint arXiv:1301.3781*, 2013. [Online]. Available: https://arxiv.org/abs/1301.3781
 
+### Recursos de datos
+
+- Stopwords en inglés: [NLTK's list of english stopwords (sebleier)](https://gist.github.com/sebleier/554280)
+- Dataset SMS Spam (inglés): [Kaggle - SMS Spam Collection Dataset](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)
+
 ### Licencia
 
 Este proyecto usa la licencia **MIT**. Ver [LICENSE](LICENSE) para detalles.
 
 ---
+
+### Resultados comparativos de entrenamiento
+
+| Optimizador | Stopwords | Tiempo de entrenamiento | Precisión (dataset) |
+|-------------|-----------|------------------------|---------------------|
+| SGD         | No        | 20.48 min              | >95% (usualmente >99%) |
+| SGD         | Sí        | 14.34 min              | >95% (usualmente >99%) |
+| Adam        | No        | 48.74 min              | >95% (usualmente >99%) |
+| Adam        | Sí        | 34.12 min              | >95% (usualmente >99%) |
+
+**Justificación de Adam y BCELoss:**
+
+Se utiliza el optimizador Adam [4] por su eficiencia y robustez en tareas de clasificación, ya que ajusta la tasa de aprendizaje de manera adaptativa y acelera la convergencia en comparación con SGD tradicional. Para la función de pérdida, se emplea Binary Cross-Entropy (BCELoss) [4], que es la opción estándar para problemas de clasificación binaria, ya que penaliza fuertemente las predicciones incorrectas y modela la probabilidad de pertenencia a la clase spam de manera adecuada.
+
+**Funciones de activación:**
+
+Se utiliza ReLU (Rectified Linear Unit) en las capas ocultas por su eficiencia computacional y su capacidad para mitigar el problema del gradiente desvanecido en redes profundas [5]. Para la capa de salida, se emplea la función Sigmoid, que transforma la salida en una probabilidad entre 0 y 1, ideal para tareas de clasificación binaria como la detección de spam [4].
