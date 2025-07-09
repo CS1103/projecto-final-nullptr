@@ -512,7 +512,6 @@ Se utiliza el optimizador Adam [4] por su eficiencia y robustez en tareas de cla
 * Implementar vectorización TF-IDF
 * Implementar vectorización basada en n-gramas
 * Escalar a datasets más grandes con paralelización
-* Implementar persistencia de modelos entrenados
 
 ---
 
