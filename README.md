@@ -10,7 +10,7 @@
 
 ### **Exposición**
 
-[▶️ Ver video de exposición](video_final.mp4)
+[▶️ Ver video de exposición](Video_final.mp4)
 [Link de la expo en drive](https://drive.google.com/drive/folders/1qtP1-8qshzXMqYk23JEnsRIoP8bzStFG)
 
 ### Contenidos
